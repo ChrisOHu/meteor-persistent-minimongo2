@@ -154,9 +154,9 @@ PersistentMinimongo2.prototype = {
 
                                     if(foundDoc) {
                                         delete doc._id;
-                                        self.col.update({_id: id}, {$set: doc});
+                                        self.col._collection.update({_id: id}, {$set: doc});
                                     } else {
-                                        id = self.col.insert(doc);
+                                        id = self.col._collection.insert(doc);
                                     }
 
                                     newList.push(id);
@@ -178,7 +178,7 @@ PersistentMinimongo2.prototype = {
                             
                                 self.col.find({}).forEach(function (doc) {
                                     if(! _.contains(self.list, doc._id))
-                                        self.col.remove({ _id: doc._id });
+                                        self.col._collection.remove({ _id: doc._id });
                                 });
                             }
 
@@ -236,7 +236,7 @@ PersistentMinimongo2.prototype = {
             console.log(_this.localStorageSize(), _this.col.find({}).count());
             // find the first 50 entries and remove them
             _.each(_this.col.find({}, {limit: trimCollectionBy}).fetch(), function(item){
-                _this.col.remove(item._id);
+                _this.col._collection.remove(item._id);
             });
         }
     }
